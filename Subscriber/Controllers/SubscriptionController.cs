@@ -1,6 +1,8 @@
 ﻿using Dapr;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Subscriber.Controllers
 {
@@ -19,10 +21,10 @@ namespace Subscriber.Controllers
 
         [Topic("pubsub", "weather")]
         [HttpPost("/weather")]
-        public IActionResult PostWeathers(WeatherForecast weather)
+        public IActionResult PostWeathers(IEnumerable<WeatherForecast> weather)
         {
             _logger.LogInformation($"Weather posted.");
-            _weatherRepo.WeatherForecasts.Add(weather);
+            _weatherRepo.WeatherForecasts = weather.ToList();
             return NoContent();
         }
     }
