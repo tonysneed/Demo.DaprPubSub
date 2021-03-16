@@ -26,5 +26,9 @@ extensions:
 services:
 - name: publisher
   project: Publisher/Publisher.csproj
+  bindings:
+  - port: 5050
 - name: subscriber
   project: Subscriber/Subscriber.csproj
+  bindings:
+  - port: 5000
