@@ -27,7 +27,7 @@ namespace Publisher
                 _logger.LogInformation("Publishing event at: {time}", DateTimeOffset.Now);
 
                 var weather = _factory.CreateWeather();
-                await _daprClient.PublishEventAsync("pubsub", "weather", weather);
+                await _daprClient.PublishEventAsync(Constants.PubSubName, "weather", weather);
 
                 await Task.Delay(5000, stoppingToken);
             }

@@ -19,7 +19,7 @@ namespace Subscriber.Controllers
             _logger = logger;
         }
 
-        [Topic("pubsub", "weather")]
+        [Topic(Constants.PubSubName, "weather")]
         [HttpPost("/weather")]
         public IActionResult PostWeathers(IEnumerable<WeatherForecast> weather)
         {

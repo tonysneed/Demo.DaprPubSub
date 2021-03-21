@@ -172,3 +172,43 @@ Demonstrates how to use Dapr for pub/sub with .NET.
    ```
    - Go to the Swagger page for the subscriber and execute `GET` for `Weatherforecast`.
    - Repeat every few seconds to see new values.
+
+## Components
+
+Instead of using the default Redis component fo pub/sub, we will now use the [AWS SNS+SQS](https://docs.dapr.io/operations/components/setup-pubsub/supported-pubsub/setup-aws-snssqs/) Dapr component with [LocalStack](https://github.com/localstack/localstack). Have a look at the **pubsub.yaml** file in the **dapr/components** folder.
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: snssqs-pubsub
+spec:
+  type: pubsub.snssqs
+  version: v1
+  metadata:
+    - name: endpoint
+      value: http://localhost:4566
+    # Use us-east-1 for localstack
+    - name: region
+      value: us-east-1
+```
+
+1. Run LocalStack using Docker.
+   ```
+   docker run --rm -p 4566:4566 -p 4571:4571 localstack/localstack
+   ```
+2. In both **Publisher** and **Subscriber** projects, update the `Constants` class to sspecify "snssqs-pubsub" for `PubSubName`.
+   ```csharp
+   public static class Constants
+   {
+      //public const string PubSubName = "pubsub";
+      public const string PubSubName = "snssqs-pubsub";
+   }
+   ```
+3. Run the Subscriber service and specify the components path.
+   ```
+   dapr run --app-id subscriber --app-port 5000 --components-path ../dapr/components -- dotnet run
+   ```
+4. Run the Publisher service and specify the components path.
+   ```
+   dapr run --app-id publisher --components-path ../dapr/components -- dotnet run
+   ```
