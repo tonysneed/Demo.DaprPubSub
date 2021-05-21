@@ -12,6 +12,8 @@ name: demo-dapr-pubsub
 # dapr extension
 extensions:
 - name: dapr
+  log-level: debug
+  components-path: "./dapr/components"
 
 # define multiple services here
 # project: app.csproj # msbuild project path (relative to this file)

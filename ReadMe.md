@@ -175,7 +175,7 @@ Demonstrates how to use Dapr for pub/sub with .NET.
 
 ## Components
 
-Instead of using the default Redis component fo pub/sub, we will now use the [AWS SNS+SQS](https://docs.dapr.io/operations/components/setup-pubsub/supported-pubsub/setup-aws-snssqs/) Dapr component with [LocalStack](https://github.com/localstack/localstack). Have a look at the **pubsub.yaml** file in the **dapr/components** folder.
+Instead of using the default Redis component fo pub/sub, we will now use the [AWS SNS+SQS](https://docs.dapr.io/operations/components/setup-pubsub/supported-pubsub/setup-aws-snssqs/) Dapr component with [LocalStack](https://github.com/localstack/localstack). Have a look at the **snssqs-pubsub.yaml** file in the **dapr/components** folder.
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
@@ -212,3 +212,25 @@ spec:
    ```
    dapr run --app-id publisher --components-path ../dapr/components -- dotnet run
    ```
+
+## Microsoft Tye
+
+Microsoft Project [Tye](https://github.com/dotnet/tye) has [support for Dapr](https://github.com/dotnet/tye/blob/main/docs/recipes/dapr.md), which can be used to debug Daprized projects with an IDE such as [Visual Studio](https://visualstudio.microsoft.com/) or [JetBrains Rider](https://www.jetbrains.com/rider/).
+
+> **Note**: At the time of this sample, Tye is still in alpha and considered experimental. You have been warned!
+
+1. Install Tye using these [instructions](https://github.com/dotnet/tye/blob/main/docs/getting_started.md).
+2. At the solution root run Tye.
+   ```
+   tye run
+   ```
+3. To debug using Tye run:
+   ```
+   tye run --debug *
+   ```
+   - Set breakpoints in your code.
+   - *Optional:* Open Exception Settings to break on CLR exceptions.
+   - From VS or Rider, attach to the Subscriber and/or Publisher.
+
+> **Note**: Pub/Sub will not work with Tye and Dapr without setting `components-path` under the `dapr` extension in the tye.yaml file.
+> See this issue: https://github.com/dotnet/tye/issues/990.
